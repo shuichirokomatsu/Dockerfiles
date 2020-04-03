@@ -7,7 +7,12 @@ RUN apt-get update && apt-get install -y \
     bzip2 \
     make \
     gcc \
-    zlib1g-dev
+    build-essential \
+    bedtools \
+    zlib1g-dev \
+    libghc-bzlib-dev \
+    liblzma-dev \
+    libkrb5-dev
 
 # STAR
 RUN wget https://github.com/alexdobin/STAR/archive/2.5.3a.tar.gz && \
@@ -22,11 +27,17 @@ RUN wget https://github.com/samtools/samtools/releases/download/1.3.1/samtools-1
     cd ../ && ./configure --without-curses && make && make install
 
 # bedtools(ver2.28.0)
-RUN wget https://github.com/arq5x/bedtools2/releases/download/v2.28.0/bedtools-2.28.0.tar.gz && \
-    tar -zxvf bedtools-2.28.0.tar.gz && \
-    cd bedtools2 && \
-    make
+#RUN wget https://github.com/arq5x/bedtools2/releases/download/v2.28.0/bedtools-2.28.0.tar.gz && \
+    #tar -zxvf bedtools-2.28.0.tar.gz && \
+    #cd bedtools2 && \
+    #make -j 4 && \
+    #cd .. && \
+    #cp ./bedtools2/bin/bedtools /usr/local/bin/ && \
+    #strip /usr/local/bin/*; true
 
 # Kent Utility tools
-RUN wget https://github.com/ENCODE-DCC/kentUtils/blob/master/bin/linux.x86_64/bedGraphToBigWig -P /usr/local/bin && \
-    wget https://github.com/ENCODE-DCC/kentUtils/blob/master/bin/linux.x86_64/bigWigAverageOverBed -P /usr/local/bin
+RUN wget http://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/bedGraphToBigWig -P /usr/local/bin && \
+    chmod +x /usr/local/bin/bedGraphToBigWig
+
+RUN wget http://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/bigWigAverageOverBed -P /usr/local/bin && \
+    chmod +x /usr/local/bin/bigWigAverageOverBed
